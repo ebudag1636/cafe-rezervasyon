@@ -3,10 +3,847 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cafe Rezervasyon</title>
+
+  <title>Cafe Rezervasyon Sistemi</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f8;
+      color: #222;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: #1f2937;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    header p {
+      margin-top: 6px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      width: 100%;
+      margin-top: 20px;
+      background: #16a34a;
+      color: white;
+    }
+
+    .add-btn:hover {
+      background: #15803d;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: #1f2937;
+      color: white;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 26px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .reservation {
+      border-left: 5px solid #16a34a;
+      background: #f9fafb;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    .reservation-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reservation-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .reservation-info {
+      margin-top: 10px;
+      line-height: 1.7;
+      color: #4b5563;
+    }
+
+    .delete-btn {
+      background: #dc2626;
+      color: white;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #6b7280;
+      padding: 20px;
+    }
+
+    .birthday-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .birthday-box input {
+      width: auto;
+      transform: scale(1.2);
+    }
+
+    .fee-section {
+      display: none;
+    }
+
+    .date-filter {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .date-filter input {
+      flex: 1;
+    }
+
+    .today-btn {
+      background: #2563eb;
+      color: white;
+      white-space: nowrap;
+      padding: 10px 15px;
+    }
+
+    @media (max-width: 500px) {
+      .date-filter {
+        flex-direction: column;
+      }
+
+      .today-btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Cafe Rezervasyon Sistemi</h1>
-  <p>Rezervasyon yönetim sistemi hazırlanıyor...</p>
+
+  <header>
+    <h1>☕ Cafe Rezervasyon Sistemi</h1>
+    <p>Rezervasyon Yönetim Paneli</p>
+  </header>
+
+  <div class="container">
+
+    <!-- İSTATİSTİKLER -->
+
+    <div class="stats">
+
+      <div class="stat-box">
+        <div>Rezervasyon</div>
+        <div class="stat-number" id="reservationCount">0</div>
+      </div>
+
+      <div class="stat-box">
+        <div>Toplam Kişi</div>
+        <div class="stat-number" id="peopleCount">0</div>
+      </div>
+
+    </div>
+
+
+    <!-- REZERVASYON EKLEME -->
+
+    <div class="card">
+
+      <h2>➕ Yeni Rezervasyon</h2>
+
+      <label>Ad Soyad</label>
+      <input
+        type="text"
+        id="name"
+        placeholder="Müşteri adı soyadı"
+      >
+
+      <label>Kişi Sayısı</label>
+      <input
+        type="number"
+        id="people"
+        min="1"
+        placeholder="Örn: 4"
+      >
+
+      <label>Tarih</label>
+      <input
+        type="date"
+        id="date"
+      >
+
+      <label>Saat</label>
+      <input
+        type="time"
+        id="time"
+      >
+
+      <label>Alan</label>
+
+      <select id="area">
+        <option value="Bahçe">🌿 Bahçe</option>
+        <option value="Teras">🌇 Teras</option>
+        <option value="Salon">🏠 Salon</option>
+      </select>
+
+
+      <div class="birthday-box">
+
+        <input
+          type="checkbox"
+          id="birthday"
+          onchange="toggleFee()"
+        >
+
+        <label style="margin:0;">
+          🎂 Doğum günü kutlaması mı?
+        </label>
+
+      </div>
+
+
+      <div
+        class="fee-section"
+        id="feeSection"
+      >
+
+        <label>Doğum Günü Ücreti</label>
+
+        <select id="birthdayFee">
+          <option value="Ücret Yok">
+            Ücret Yok
+          </option>
+
+          <option value="Ücret Var">
+            Ücret Var
+          </option>
+        </select>
+
+      </div>
+
+
+      <label>Not</label>
+
+      <textarea
+        id="note"
+        placeholder="Özel masa isteği, müşteri notu vb."
+      ></textarea>
+
+
+      <button
+        class="add-btn"
+        onclick="addReservation()"
+      >
+        Rezervasyon Ekle
+      </button>
+
+    </div>
+
+
+    <!-- REZERVASYON LİSTESİ -->
+
+    <div class="card">
+
+      <h2>📋 Rezervasyonlar</h2>
+
+      <div class="date-filter">
+
+        <input
+          type="date"
+          id="filterDate"
+          onchange="renderReservations()"
+        >
+
+        <button
+          class="today-btn"
+          onclick="showToday()"
+        >
+          Bugün
+        </button>
+
+      </div>
+
+
+      <div id="reservationList">
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let reservations =
+      JSON.parse(
+        localStorage.getItem("reservations")
+      ) || [];
+
+
+    function getToday() {
+
+      const today =
+        new Date();
+
+      const year =
+        today.getFullYear();
+
+      const month =
+        String(
+          today.getMonth() + 1
+        ).padStart(2, "0");
+
+      const day =
+        String(
+          today.getDate()
+        ).padStart(2, "0");
+
+      return year +
+        "-" +
+        month +
+        "-" +
+        day;
+    }
+
+
+    document
+      .getElementById("date")
+      .value =
+      getToday();
+
+
+    document
+      .getElementById("filterDate")
+      .value =
+      getToday();
+
+
+
+    function toggleFee() {
+
+      const birthday =
+        document.getElementById("birthday");
+
+      const feeSection =
+        document.getElementById("feeSection");
+
+
+      if (birthday.checked) {
+
+        feeSection.style.display =
+          "block";
+
+      } else {
+
+        feeSection.style.display =
+          "none";
+
+      }
+
+    }
+
+
+
+    function addReservation() {
+
+      const name =
+        document
+        .getElementById("name")
+        .value
+        .trim();
+
+
+      const people =
+        document
+        .getElementById("people")
+        .value;
+
+
+      const date =
+        document
+        .getElementById("date")
+        .value;
+
+
+      const time =
+        document
+        .getElementById("time")
+        .value;
+
+
+      const area =
+        document
+        .getElementById("area")
+        .value;
+
+
+      const birthday =
+        document
+        .getElementById("birthday")
+        .checked;
+
+
+      const birthdayFee =
+        document
+        .getElementById("birthdayFee")
+        .value;
+
+
+      const note =
+        document
+        .getElementById("note")
+        .value
+        .trim();
+
+
+
+      if (
+        name === "" ||
+        people === "" ||
+        date === ""
+      ) {
+
+        alert(
+          "Lütfen Ad Soyad, Kişi Sayısı ve Tarih alanlarını doldurun."
+        );
+
+        return;
+
+      }
+
+
+
+      const reservation = {
+
+        id:
+          Date.now(),
+
+        name:
+          name,
+
+        people:
+          Number(people),
+
+        date:
+          date,
+
+        time:
+          time,
+
+        area:
+          area,
+
+        birthday:
+          birthday,
+
+        birthdayFee:
+          birthday
+            ? birthdayFee
+            : "",
+
+        note:
+          note
+
+      };
+
+
+
+      reservations.push(
+        reservation
+      );
+
+
+      localStorage.setItem(
+        "reservations",
+        JSON.stringify(
+          reservations
+        )
+      );
+
+
+
+      alert(
+        "Rezervasyon başarıyla eklendi!"
+      );
+
+
+
+      document
+        .getElementById("name")
+        .value =
+        "";
+
+
+      document
+        .getElementById("people")
+        .value =
+        "";
+
+
+      document
+        .getElementById("time")
+        .value =
+        "";
+
+
+      document
+        .getElementById("note")
+        .value =
+        "";
+
+
+      document
+        .getElementById("birthday")
+        .checked =
+        false;
+
+
+      toggleFee();
+
+
+      renderReservations();
+
+    }
+
+
+
+    function renderReservations() {
+
+      const list =
+        document.getElementById(
+          "reservationList"
+        );
+
+
+      const filterDate =
+        document.getElementById(
+          "filterDate"
+        ).value;
+
+
+
+      const filtered =
+        reservations
+        .filter(
+          reservation =>
+            reservation.date ===
+            filterDate
+        )
+        .sort(
+          (a, b) =>
+            a.time.localeCompare(
+              b.time
+            )
+        );
+
+
+
+      list.innerHTML =
+        "";
+
+
+
+      if (
+        filtered.length === 0
+      ) {
+
+        list.innerHTML =
+          `
+          <div class="empty">
+            Bu tarih için rezervasyon bulunmuyor.
+          </div>
+          `;
+
+      } else {
+
+        filtered.forEach(
+          reservation => {
+
+
+            let birthdayText =
+              "";
+
+
+            if (
+              reservation.birthday
+            ) {
+
+              birthdayText =
+                `
+                <br>
+                🎂 Doğum Günü:
+                ${reservation.birthdayFee}
+                `;
+
+            }
+
+
+
+            let timeText =
+              reservation.time
+                ? reservation.time
+                : "Saat belirtilmedi";
+
+
+
+            let noteText =
+              reservation.note
+                ? `
+                  <br>
+                  📝 Not:
+                  ${reservation.note}
+                  `
+                : "";
+
+
+
+            list.innerHTML +=
+              `
+
+              <div class="reservation">
+
+                <div class="reservation-top">
+
+                  <div class="reservation-name">
+                    ${reservation.name}
+                  </div>
+
+
+                  <button
+                    class="delete-btn"
+                    onclick="deleteReservation(
+                      ${reservation.id}
+                    )"
+                  >
+                    Sil
+                  </button>
+
+                </div>
+
+
+                <div class="reservation-info">
+
+                  👥
+                  ${reservation.people}
+                  kişi
+
+                  <br>
+
+                  🕒
+                  ${timeText}
+
+                  <br>
+
+                  📍
+                  ${reservation.area}
+
+                  ${birthdayText}
+
+                  ${noteText}
+
+                </div>
+
+              </div>
+
+              `;
+
+          }
+        );
+
+      }
+
+
+
+      updateStats(
+        filtered
+      );
+
+    }
+
+
+
+    function updateStats(
+      filteredReservations
+    ) {
+
+      const totalReservations =
+        filteredReservations.length;
+
+
+      const totalPeople =
+        filteredReservations.reduce(
+          (total, reservation) =>
+            total +
+            reservation.people,
+          0
+        );
+
+
+      document
+        .getElementById(
+          "reservationCount"
+        )
+        .innerText =
+        totalReservations;
+
+
+      document
+        .getElementById(
+          "peopleCount"
+        )
+        .innerText =
+        totalPeople;
+
+    }
+
+
+
+    function deleteReservation(
+      id
+    ) {
+
+      const confirmDelete =
+        confirm(
+          "Bu rezervasyonu silmek istediğinize emin misiniz?"
+        );
+
+
+      if (
+        !confirmDelete
+      ) {
+
+        return;
+
+      }
+
+
+
+      reservations =
+        reservations.filter(
+          reservation =>
+            reservation.id !== id
+        );
+
+
+      localStorage.setItem(
+        "reservations",
+        JSON.stringify(
+          reservations
+        )
+      );
+
+
+      renderReservations();
+
+    }
+
+
+
+    function showToday() {
+
+      document
+        .getElementById(
+          "filterDate"
+        )
+        .value =
+        getToday();
+
+
+      renderReservations();
+
+    }
+
+
+
+    renderReservations();
+
+  </script>
+
 </body>
 </html>
