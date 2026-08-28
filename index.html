@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Cafe Rezervasyon Sistemi</title>
 
+
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -14,11 +21,13 @@
       font-family: Arial, sans-serif;
     }
 
+
     body {
       background: #f4f6f8;
       color: #222;
       padding-bottom: 40px;
     }
+
 
     header {
       background: #1f2937;
@@ -27,9 +36,11 @@
       text-align: center;
     }
 
+
     header h1 {
       font-size: 24px;
     }
+
 
     header p {
       margin-top: 6px;
@@ -37,24 +48,30 @@
       font-size: 14px;
     }
 
+
     .container {
       width: 95%;
       max-width: 800px;
       margin: 20px auto;
     }
 
+
     .card {
       background: white;
       padding: 20px;
       border-radius: 15px;
       margin-bottom: 20px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      box-shadow:
+        0 3px 12px
+        rgba(0,0,0,0.08);
     }
+
 
     h2 {
       margin-bottom: 15px;
       font-size: 20px;
     }
+
 
     label {
       display: block;
@@ -63,6 +80,7 @@
       font-weight: bold;
       font-size: 14px;
     }
+
 
     input,
     select,
@@ -74,10 +92,12 @@
       font-size: 16px;
     }
 
+
     textarea {
       resize: vertical;
       min-height: 80px;
     }
+
 
     button {
       border: none;
@@ -88,10 +108,120 @@
       cursor: pointer;
     }
 
+
     button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
+
+
+    /* =========================
+       GİRİŞ EKRANI
+    ========================= */
+
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #f4f6f8;
+    }
+
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow:
+        0 5px 20px
+        rgba(0,0,0,0.12);
+    }
+
+
+    .login-card h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+
+    .login-card p {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+
+    .login-btn {
+      width: 100%;
+      margin-top: 20px;
+      background: #16a34a;
+      color: white;
+    }
+
+
+    .login-btn:hover {
+      background: #15803d;
+    }
+
+
+    .login-error {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       ANA SİSTEM
+    ========================= */
+
+    #app {
+      display: none;
+    }
+
+
+    .user-bar {
+      width: 95%;
+      max-width: 800px;
+      margin: 15px auto 0 auto;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+
+      background: white;
+      padding: 12px 15px;
+      border-radius: 12px;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0,0,0,0.08);
+    }
+
+
+    .user-info {
+      font-size: 14px;
+      color: #374151;
+      overflow-wrap: anywhere;
+    }
+
+
+    .logout-btn {
+      background: #dc2626;
+      color: white;
+      padding: 9px 13px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
 
     .add-btn {
       width: 100%;
@@ -100,9 +230,11 @@
       color: white;
     }
 
+
     .add-btn:hover {
       background: #15803d;
     }
+
 
     .stats {
       display: grid;
@@ -110,6 +242,7 @@
       gap: 12px;
       margin-bottom: 20px;
     }
+
 
     .stat-box {
       background: #1f2937;
@@ -119,11 +252,13 @@
       text-align: center;
     }
 
+
     .stat-number {
       font-size: 26px;
       font-weight: bold;
       margin-top: 5px;
     }
+
 
     .reservation {
       border-left: 5px solid #16a34a;
@@ -133,6 +268,7 @@
       margin-top: 12px;
     }
 
+
     .reservation-top {
       display: flex;
       justify-content: space-between;
@@ -140,16 +276,19 @@
       gap: 10px;
     }
 
+
     .reservation-name {
       font-size: 18px;
       font-weight: bold;
     }
+
 
     .reservation-info {
       margin-top: 10px;
       line-height: 1.7;
       color: #4b5563;
     }
+
 
     .delete-btn {
       background: #dc2626;
@@ -158,11 +297,13 @@
       font-size: 13px;
     }
 
+
     .empty {
       text-align: center;
       color: #6b7280;
       padding: 20px;
     }
+
 
     .birthday-box {
       display: flex;
@@ -171,14 +312,17 @@
       margin-top: 15px;
     }
 
+
     .birthday-box input {
       width: auto;
       transform: scale(1.2);
     }
 
+
     .fee-section {
       display: none;
     }
+
 
     .date-filter {
       display: flex;
@@ -186,9 +330,11 @@
       margin-bottom: 15px;
     }
 
+
     .date-filter input {
       flex: 1;
     }
+
 
     .today-btn {
       background: #2563eb;
@@ -197,204 +343,109 @@
       padding: 10px 15px;
     }
 
+
     .loading {
       text-align: center;
       color: #6b7280;
       padding: 20px;
     }
 
+
+    .permission-warning {
+      display: none;
+      margin-top: 15px;
+      padding: 14px;
+      background: #fef3c7;
+      color: #92400e;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+
     @media (max-width: 500px) {
+
       .date-filter {
         flex-direction: column;
       }
 
+
       .today-btn {
         width: 100%;
       }
+
+
+      .user-bar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+
+      .logout-btn {
+        width: 100%;
+      }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <header>
-    <h1>☕ Cafe Rezervasyon Sistemi</h1>
-    <p>Rezervasyon Yönetim Paneli</p>
-  </header>
 
-  <div class="container">
+  <!-- =========================
+       GİRİŞ EKRANI
+  ========================= -->
 
-    <!-- İSTATİSTİKLER -->
+  <div id="loginScreen">
 
-    <div class="stats">
+    <div class="login-card">
 
-      <div class="stat-box">
-        <div>Rezervasyon</div>
-        <div
-          class="stat-number"
-          id="reservationCount"
-        >
-          0
-        </div>
-      </div>
+      <h1>☕ Cafe Rezervasyon</h1>
 
-      <div class="stat-box">
-        <div>Toplam Kişi</div>
-        <div
-          class="stat-number"
-          id="peopleCount"
-        >
-          0
-        </div>
-      </div>
-
-    </div>
+      <p>
+        Personel giriş sistemi
+      </p>
 
 
-    <!-- REZERVASYON EKLEME -->
-
-    <div class="card">
-
-      <h2>➕ Yeni Rezervasyon</h2>
-
-      <label>Ad Soyad</label>
+      <label>
+        E-posta
+      </label>
 
       <input
-        type="text"
-        id="name"
-        placeholder="Müşteri adı soyadı"
+        type="email"
+        id="loginEmail"
+        placeholder="ornek@email.com"
+        autocomplete="email"
       >
 
 
-      <label>Kişi Sayısı</label>
+      <label>
+        Şifre
+      </label>
 
       <input
-        type="number"
-        id="people"
-        min="1"
-        placeholder="Örn: 4"
+        type="password"
+        id="loginPassword"
+        placeholder="Şifreniz"
+        autocomplete="current-password"
       >
-
-
-      <label>Tarih</label>
-
-      <input
-        type="date"
-        id="date"
-      >
-
-
-      <label>Saat</label>
-
-      <input
-        type="time"
-        id="time"
-      >
-
-
-      <label>Alan</label>
-
-      <select id="area">
-        <option value="Bahçe">
-          🌿 Bahçe
-        </option>
-
-        <option value="Teras">
-          🌇 Teras
-        </option>
-
-        <option value="Salon">
-          🏠 Salon
-        </option>
-      </select>
-
-
-      <div class="birthday-box">
-
-        <input
-          type="checkbox"
-          id="birthday"
-          onchange="toggleFee()"
-        >
-
-        <label style="margin:0;">
-          🎂 Doğum günü kutlaması mı?
-        </label>
-
-      </div>
-
-
-      <div
-        class="fee-section"
-        id="feeSection"
-      >
-
-        <label>Doğum Günü Ücreti</label>
-
-        <select id="birthdayFee">
-
-          <option value="false">
-            Ücret Yok
-          </option>
-
-          <option value="true">
-            Ücret Var
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <label>Not</label>
-
-      <textarea
-        id="note"
-        placeholder="Özel masa isteği, müşteri notu vb."
-      ></textarea>
 
 
       <button
-        class="add-btn"
-        id="addButton"
-        onclick="addReservation()"
+        class="login-btn"
+        id="loginButton"
+        onclick="login()"
       >
-        Rezervasyon Ekle
+        Giriş Yap
       </button>
 
-    </div>
 
-
-    <!-- REZERVASYON LİSTESİ -->
-
-    <div class="card">
-
-      <h2>📋 Rezervasyonlar</h2>
-
-      <div class="date-filter">
-
-        <input
-          type="date"
-          id="filterDate"
-          onchange="renderReservations()"
-        >
-
-        <button
-          class="today-btn"
-          onclick="showToday()"
-        >
-          Bugün
-        </button>
-
-      </div>
-
-
-      <div id="reservationList">
-
-        <div class="loading">
-          Rezervasyonlar yükleniyor...
-        </div>
-
+      <div
+        class="login-error"
+        id="loginError"
+      >
       </div>
 
     </div>
@@ -402,7 +453,320 @@
   </div>
 
 
+
+  <!-- =========================
+       ANA UYGULAMA
+  ========================= -->
+
+  <div id="app">
+
+
+    <header>
+
+      <h1>
+        ☕ Cafe Rezervasyon Sistemi
+      </h1>
+
+      <p>
+        Rezervasyon Yönetim Paneli
+      </p>
+
+    </header>
+
+
+
+    <!-- KULLANICI BİLGİSİ -->
+
+    <div class="user-bar">
+
+      <div
+        class="user-info"
+        id="userInfo"
+      >
+        Yükleniyor...
+      </div>
+
+
+      <button
+        class="logout-btn"
+        onclick="logout()"
+      >
+        Çıkış Yap
+      </button>
+
+    </div>
+
+
+
+    <div class="container">
+
+
+      <!-- =========================
+           İSTATİSTİKLER
+      ========================= -->
+
+      <div class="stats">
+
+
+        <div class="stat-box">
+
+          <div>
+            Rezervasyon
+          </div>
+
+          <div
+            class="stat-number"
+            id="reservationCount"
+          >
+            0
+          </div>
+
+        </div>
+
+
+
+        <div class="stat-box">
+
+          <div>
+            Toplam Kişi
+          </div>
+
+          <div
+            class="stat-number"
+            id="peopleCount"
+          >
+            0
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- =========================
+           REZERVASYON EKLEME
+      ========================= -->
+
+      <div
+        class="card"
+        id="reservationFormCard"
+      >
+
+        <h2>
+          ➕ Yeni Rezervasyon
+        </h2>
+
+
+        <div
+          class="permission-warning"
+          id="permissionWarning"
+        >
+          Bu hesabın rezervasyon ekleme yetkisi bulunmuyor.
+        </div>
+
+
+
+        <label>
+          Ad Soyad
+        </label>
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Müşteri adı soyadı"
+        >
+
+
+
+        <label>
+          Kişi Sayısı
+        </label>
+
+        <input
+          type="number"
+          id="people"
+          min="1"
+          placeholder="Örn: 4"
+        >
+
+
+
+        <label>
+          Tarih
+        </label>
+
+        <input
+          type="date"
+          id="date"
+        >
+
+
+
+        <label>
+          Saat
+        </label>
+
+        <input
+          type="time"
+          id="time"
+        >
+
+
+
+        <label>
+          Alan
+        </label>
+
+        <select id="area">
+
+          <option value="Bahçe">
+            🌿 Bahçe
+          </option>
+
+          <option value="Teras">
+            🌇 Teras
+          </option>
+
+          <option value="Salon">
+            🏠 Salon
+          </option>
+
+        </select>
+
+
+
+        <div class="birthday-box">
+
+          <input
+            type="checkbox"
+            id="birthday"
+            onchange="toggleFee()"
+          >
+
+
+          <label
+            style="margin:0;"
+          >
+            🎂 Doğum günü kutlaması mı?
+          </label>
+
+        </div>
+
+
+
+        <div
+          class="fee-section"
+          id="feeSection"
+        >
+
+          <label>
+            Doğum Günü Ücreti
+          </label>
+
+
+          <select id="birthdayFee">
+
+            <option value="false">
+              Ücret Yok
+            </option>
+
+            <option value="true">
+              Ücret Var
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <label>
+          Not
+        </label>
+
+        <textarea
+          id="note"
+          placeholder="Özel masa isteği, müşteri notu vb."
+        ></textarea>
+
+
+
+        <button
+          class="add-btn"
+          id="addButton"
+          onclick="addReservation()"
+        >
+          Rezervasyon Ekle
+        </button>
+
+
+      </div>
+
+
+
+      <!-- =========================
+           REZERVASYON LİSTESİ
+      ========================= -->
+
+      <div class="card">
+
+
+        <h2>
+          📋 Rezervasyonlar
+        </h2>
+
+
+
+        <div class="date-filter">
+
+          <input
+            type="date"
+            id="filterDate"
+            onchange="renderReservations()"
+          >
+
+
+          <button
+            class="today-btn"
+            onclick="showToday()"
+          >
+            Bugün
+          </button>
+
+        </div>
+
+
+
+        <div id="reservationList">
+
+          <div class="loading">
+            Rezervasyonlar yükleniyor...
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =========================
+       SUPABASE KÜTÜPHANESİ
+  ========================= -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
   <script>
+
 
     /*
       ========================================
@@ -410,21 +774,44 @@
       ========================================
     */
 
+
     const SUPABASE_URL =
-      "https://moxlbxwkiwuahuoucnwo.supabase.co/rest/v1";
+      "https://moxlbxwkiwuahuoucnwo.supabase.co";
 
 
     const SUPABASE_KEY =
       "sb_publishable_TFyyOLgokQ_RxNFYmRjL-g_nff_x3dO";
 
 
+
+    /*
+      SUPABASE CLIENT
+    */
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+
     /*
       ========================================
-      REZERVASYONLAR
+      GENEL DEĞİŞKENLER
       ========================================
     */
 
+
     let reservations = [];
+
+
+    let currentUser = null;
+
+
+    let currentEmployee = null;
+
 
 
     /*
@@ -432,6 +819,7 @@
       TARİH
       ========================================
     */
+
 
     function getToday() {
 
@@ -446,13 +834,19 @@
       const month =
         String(
           today.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+          2,
+          "0"
+        );
 
 
       const day =
         String(
           today.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+          2,
+          "0"
+        );
 
 
       return (
@@ -466,14 +860,20 @@
     }
 
 
+
     document
-      .getElementById("date")
+      .getElementById(
+        "date"
+      )
       .value =
       getToday();
 
 
+
     document
-      .getElementById("filterDate")
+      .getElementById(
+        "filterDate"
+      )
       .value =
       getToday();
 
@@ -481,67 +881,717 @@
 
     /*
       ========================================
-      SUPABASE'DEN REZERVASYONLARI ÇEK
+      GİRİŞ YAP
       ========================================
     */
 
-    async function loadReservations() {
+
+    async function login() {
+
+
+      const email =
+        document
+          .getElementById(
+            "loginEmail"
+          )
+          .value
+          .trim();
+
+
+
+      const password =
+        document
+          .getElementById(
+            "loginPassword"
+          )
+          .value;
+
+
+
+      const errorBox =
+        document.getElementById(
+          "loginError"
+        );
+
+
+
+      const loginButton =
+        document.getElementById(
+          "loginButton"
+        );
+
+
+
+      errorBox.style.display =
+        "none";
+
+
+
+      if (
+        email === "" ||
+        password === ""
+      ) {
+
+        showLoginError(
+          "Lütfen e-posta ve şifrenizi girin."
+        );
+
+        return;
+
+      }
+
+
+
+      loginButton.disabled =
+        true;
+
+
+      loginButton.innerText =
+        "Giriş yapılıyor...";
+
+
 
       try {
 
-        const response =
-          await fetch(
-            SUPABASE_URL +
-            "/reservations" +
-            "?select=*" +
-            "&order=reservation_date.asc,reservation_time.asc",
-            {
-              headers: {
-                "apikey":
-                  SUPABASE_KEY,
 
-                "Authorization":
-                  "Bearer " +
-                  SUPABASE_KEY
-              }
-            }
-          );
+        const {
+          data,
+          error
+        } =
+        await supabaseClient.auth.signInWithPassword(
+          {
+            email:
+              email,
+
+            password:
+              password
+          }
+        );
+
 
 
         if (
-          !response.ok
+          error
         ) {
 
-          const errorText =
-            await response.text();
+          throw error;
+
+        }
 
 
-          console.error(
-            "Supabase yükleme hatası:",
-            errorText
-          );
 
+        if (
+          !data.user
+        ) {
 
           throw new Error(
-            "Rezervasyonlar yüklenemedi."
+            "Kullanıcı bilgisi alınamadı."
           );
 
         }
 
 
-        reservations =
-          await response.json();
+
+        currentUser =
+          data.user;
 
 
-        renderReservations();
+
+        /*
+          ÇALIŞAN YETKİSİNİ KONTROL ET
+        */
+
+
+        await checkEmployeeAuthorization();
+
+
 
       } catch (
         error
       ) {
 
+
         console.error(
+          "Giriş hatası:",
           error
         );
+
+
+        showLoginError(
+          error.message ||
+          "Giriş yapılırken hata oluştu."
+        );
+
+
+      } finally {
+
+
+        loginButton.disabled =
+          false;
+
+
+        loginButton.innerText =
+          "Giriş Yap";
+
+      }
+
+    }
+
+
+
+    /*
+      ========================================
+      GİRİŞ HATA MESAJI
+      ========================================
+    */
+
+
+    function showLoginError(
+      message
+    ) {
+
+
+      const errorBox =
+        document.getElementById(
+          "loginError"
+        );
+
+
+      errorBox.innerText =
+        message;
+
+
+      errorBox.style.display =
+        "block";
+
+    }
+
+
+
+    /*
+      ========================================
+      ÇALIŞAN YETKİ KONTROLÜ
+      ========================================
+    */
+
+
+    async function checkEmployeeAuthorization() {
+
+
+      if (
+        !currentUser
+      ) {
+
+        return;
+
+      }
+
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+        await supabaseClient
+          .from(
+            "authorized_employees"
+          )
+          .select(
+            "*"
+          )
+          .eq(
+            "user_id",
+            currentUser.id
+          )
+          .maybeSingle();
+
+
+
+        if (
+          error
+        ) {
+
+          console.error(
+            "Çalışan kontrol hatası:",
+            error
+          );
+
+
+          throw error;
+
+        }
+
+
+
+        /*
+          KULLANICI YETKİLİ LİSTESİNDE YOK
+        */
+
+
+        if (
+          !data
+        ) {
+
+
+          await supabaseClient
+            .auth
+            .signOut();
+
+
+
+          currentUser =
+            null;
+
+
+
+          showLoginError(
+            "Bu hesap rezervasyon sistemini kullanmaya yetkili değil."
+          );
+
+
+          return;
+
+        }
+
+
+
+        currentEmployee =
+          data;
+
+
+
+        /*
+          UYGULAMAYI AÇ
+        */
+
+
+        document
+          .getElementById(
+            "loginScreen"
+          )
+          .style.display =
+          "none";
+
+
+        document
+          .getElementById(
+            "app"
+          )
+          .style.display =
+          "block";
+
+
+
+        /*
+          KULLANICI BİLGİSİ
+        */
+
+
+        const employeeName =
+          currentEmployee.full_name ||
+          currentUser.email;
+
+
+
+        document
+          .getElementById(
+            "userInfo"
+          )
+          .innerHTML =
+          `
+            👤 <strong>
+              ${escapeHtml(
+                employeeName
+              )}
+            </strong>
+            <br>
+            <small>
+              ${escapeHtml(
+                currentUser.email
+              )}
+            </small>
+          `;
+
+
+
+        /*
+          REZERVASYON EKLEME YETKİSİ
+        */
+
+
+        const canCreate =
+          currentEmployee
+            .can_create_reservation ===
+          true;
+
+
+
+        if (
+          !canCreate
+        ) {
+
+
+          document
+            .getElementById(
+              "permissionWarning"
+            )
+            .style.display =
+            "block";
+
+
+          disableReservationForm();
+
+        } else {
+
+
+          enableReservationForm();
+
+        }
+
+
+
+        /*
+          REZERVASYONLARI YÜKLE
+        */
+
+
+        await loadReservations();
+
+
+
+      } catch (
+        error
+      ) {
+
+
+        console.error(
+          "Yetki kontrol hatası:",
+          error
+        );
+
+
+
+        await supabaseClient
+          .auth
+          .signOut();
+
+
+
+        currentUser =
+          null;
+
+
+        currentEmployee =
+          null;
+
+
+
+        showLoginError(
+          "Çalışan yetkisi kontrol edilirken hata oluştu. Supabase RLS ayarlarını kontrol edin."
+        );
+
+      }
+
+    }
+
+
+
+    /*
+      ========================================
+      FORMU PASİF YAP
+      ========================================
+    */
+
+
+    function disableReservationForm() {
+
+
+      const elements =
+        document
+          .getElementById(
+            "reservationFormCard"
+          )
+          .querySelectorAll(
+            "input, select, textarea, button"
+          );
+
+
+
+      elements.forEach(
+        element => {
+
+          element.disabled =
+            true;
+
+        }
+      );
+
+    }
+
+
+
+    /*
+      ========================================
+      FORMU AKTİF YAP
+      ========================================
+    */
+
+
+    function enableReservationForm() {
+
+
+      const elements =
+        document
+          .getElementById(
+            "reservationFormCard"
+          )
+          .querySelectorAll(
+            "input, select, textarea, button"
+          );
+
+
+
+      elements.forEach(
+        element => {
+
+          element.disabled =
+            false;
+
+        }
+      );
+
+    }
+
+
+
+    /*
+      ========================================
+      ÇIKIŞ YAP
+      ========================================
+    */
+
+
+    async function logout() {
+
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+
+      currentUser =
+        null;
+
+
+      currentEmployee =
+        null;
+
+
+      reservations =
+        [];
+
+
+
+      document
+        .getElementById(
+          "app"
+        )
+        .style.display =
+        "none";
+
+
+
+      document
+        .getElementById(
+          "loginScreen"
+        )
+        .style.display =
+        "flex";
+
+
+
+      document
+        .getElementById(
+          "loginPassword"
+        )
+        .value =
+        "";
+
+    }
+
+
+
+    /*
+      ========================================
+      OTURUM KONTROLÜ
+      ========================================
+    */
+
+
+    async function checkSession() {
+
+
+      try {
+
+
+        const {
+          data:
+          {
+            session
+          }
+        } =
+        await supabaseClient
+          .auth
+          .getSession();
+
+
+
+        if (
+          session &&
+          session.user
+        ) {
+
+
+          currentUser =
+            session.user;
+
+
+
+          await checkEmployeeAuthorization();
+
+
+        } else {
+
+
+          document
+            .getElementById(
+              "loginScreen"
+            )
+            .style.display =
+            "flex";
+
+
+          document
+            .getElementById(
+              "app"
+            )
+            .style.display =
+            "none";
+
+        }
+
+
+      } catch (
+        error
+      ) {
+
+
+        console.error(
+          "Oturum kontrol hatası:",
+          error
+        );
+
+      }
+
+    }
+
+
+
+    /*
+      ========================================
+      SUPABASE'DEN
+      REZERVASYONLARI ÇEK
+      ========================================
+    */
+
+
+    async function loadReservations() {
+
+
+      try {
+
+
+        document
+          .getElementById(
+            "reservationList"
+          )
+          .innerHTML =
+          `
+            <div class="loading">
+              Rezervasyonlar yükleniyor...
+            </div>
+          `;
+
+
+
+        const {
+          data,
+          error
+        } =
+        await supabaseClient
+          .from(
+            "reservations"
+          )
+          .select(
+            "*"
+          )
+          .order(
+            "reservation_date",
+            {
+              ascending:
+                true
+            }
+          )
+          .order(
+            "reservation_time",
+            {
+              ascending:
+                true
+            }
+          );
+
+
+
+        if (
+          error
+        ) {
+
+          console.error(
+            "Supabase yükleme hatası:",
+            error
+          );
+
+
+          throw error;
+
+        }
+
+
+
+        reservations =
+          data ||
+          [];
+
+
+
+        renderReservations();
+
+
+
+      } catch (
+        error
+      ) {
+
+
+        console.error(
+          "Rezervasyon yükleme hatası:",
+          error
+        );
+
 
 
         document
@@ -553,7 +1603,10 @@
             <div class="empty">
               Rezervasyonlar yüklenirken bir hata oluştu.
               <br><br>
-              Lütfen Supabase bağlantısını kontrol edin.
+              ${escapeHtml(
+                error.message ||
+                "Bilinmeyen hata"
+              )}
             </div>
           `;
 
@@ -569,12 +1622,15 @@
       ========================================
     */
 
+
     function toggleFee() {
+
 
       const birthday =
         document.getElementById(
           "birthday"
         );
+
 
 
       const feeSection =
@@ -583,14 +1639,18 @@
         );
 
 
+
       if (
         birthday.checked
       ) {
 
+
         feeSection.style.display =
           "block";
 
+
       } else {
+
 
         feeSection.style.display =
           "none";
@@ -607,68 +1667,134 @@
       ========================================
     */
 
+
     async function addReservation() {
+
+
+      /*
+        ÖNCE YETKİ KONTROLÜ
+      */
+
+
+      if (
+        !currentUser ||
+        !currentEmployee
+      ) {
+
+
+        alert(
+          "Lütfen önce giriş yapın."
+        );
+
+        return;
+
+      }
+
+
+
+      if (
+        currentEmployee
+          .can_create_reservation !==
+        true
+      ) {
+
+
+        alert(
+          "Bu hesabın rezervasyon ekleme yetkisi bulunmuyor."
+        );
+
+        return;
+
+      }
+
+
 
       const name =
         document
-          .getElementById("name")
+          .getElementById(
+            "name"
+          )
           .value
           .trim();
+
 
 
       const people =
         document
-          .getElementById("people")
+          .getElementById(
+            "people"
+          )
           .value;
+
 
 
       const date =
         document
-          .getElementById("date")
+          .getElementById(
+            "date"
+          )
           .value;
+
 
 
       const time =
         document
-          .getElementById("time")
+          .getElementById(
+            "time"
+          )
           .value;
+
 
 
       const area =
         document
-          .getElementById("area")
+          .getElementById(
+            "area"
+          )
           .value;
+
 
 
       const birthday =
         document
-          .getElementById("birthday")
+          .getElementById(
+            "birthday"
+          )
           .checked;
+
 
 
       const birthdayFee =
         document
-          .getElementById("birthdayFee")
+          .getElementById(
+            "birthdayFee"
+          )
           .value ===
         "true";
 
 
+
       const note =
         document
-          .getElementById("note")
+          .getElementById(
+            "note"
+          )
           .value
           .trim();
+
 
 
       /*
         ZORUNLU ALAN KONTROLÜ
       */
 
+
       if (
         name === "" ||
         people === "" ||
         date === ""
       ) {
+
 
         alert(
           "Lütfen Ad Soyad, Kişi Sayısı ve Tarih alanlarını doldurun."
@@ -679,63 +1805,80 @@
       }
 
 
+
       const addButton =
         document.getElementById(
           "addButton"
         );
 
 
+
       addButton.disabled =
         true;
+
 
 
       addButton.innerText =
         "Kaydediliyor...";
 
 
+
       /*
-        SUPABASE'E GÖNDERİLECEK VERİ
+        SUPABASE'E
+        GÖNDERİLECEK VERİ
       */
 
+
       const reservation = {
+
 
         customer_name:
           name,
 
+
         phone:
           null,
 
+
         reservation_date:
           date,
+
 
         reservation_time:
           time
             ? time
             : null,
 
+
         guest_count:
           Number(
             people
           ),
 
+
         area:
           area,
 
+
         requested_table:
           null,
+
 
         notes:
           note
             ? note
             : null,
 
+
         is_birthday:
           birthday,
+
 
         birthday_fee:
           birthday
             ? birthdayFee
             : false,
+
 
         status:
           "Aktif"
@@ -743,71 +1886,49 @@
       };
 
 
+
       try {
 
-        const response =
-          await fetch(
-            SUPABASE_URL +
-            "/reservations",
-            {
-              method:
-                "POST",
 
-              headers: {
+        const {
+          data,
+          error
+        } =
+        await supabaseClient
+          .from(
+            "reservations"
+          )
+          .insert(
+            [
+              reservation
+            ]
+          )
+          .select();
 
-                "apikey":
-                  SUPABASE_KEY,
-
-                "Authorization":
-                  "Bearer " +
-                  SUPABASE_KEY,
-
-                "Content-Type":
-                  "application/json",
-
-                "Prefer":
-                  "return=representation"
-
-              },
-
-              body:
-                JSON.stringify(
-                  reservation
-                )
-
-            }
-          );
 
 
         if (
-          !response.ok
+          error
         ) {
-
-          const errorText =
-            await response.text();
 
 
           console.error(
             "Supabase ekleme hatası:",
-            errorText
+            error
           );
 
 
-          throw new Error(
-            "Rezervasyon kaydedilemedi."
-          );
+          throw error;
 
         }
 
 
-        const newReservation =
-          await response.json();
-
 
         console.log(
           "Eklenen rezervasyon:",
-          newReservation
+          data
         );
+
 
 
         alert(
@@ -815,73 +1936,132 @@
         );
 
 
+
         /*
           FORMU TEMİZLE
         */
 
+
         document
-          .getElementById("name")
+          .getElementById(
+            "name"
+          )
           .value =
           "";
 
 
+
         document
-          .getElementById("people")
+          .getElementById(
+            "people"
+          )
           .value =
           "";
 
 
+
         document
-          .getElementById("time")
+          .getElementById(
+            "time"
+          )
           .value =
           "";
 
 
+
         document
-          .getElementById("note")
+          .getElementById(
+            "note"
+          )
           .value =
           "";
 
 
+
         document
-          .getElementById("birthday")
+          .getElementById(
+            "birthday"
+          )
           .checked =
           false;
 
 
+
         document
-          .getElementById("birthdayFee")
+          .getElementById(
+            "birthdayFee"
+          )
           .value =
           "false";
+
 
 
         toggleFee();
 
 
+
         /*
-          VERİLERİ YENİDEN ÇEK
+          VERİLERİ
+          YENİDEN ÇEK
         */
 
+
         await loadReservations();
+
 
 
       } catch (
         error
       ) {
 
+
         console.error(
+          "Rezervasyon ekleme hatası:",
           error
         );
 
 
+
+        let message =
+          "Rezervasyon kaydedilirken hata oluştu.";
+
+
+
+        if (
+          error.message
+        ) {
+
+
+          message +=
+            "\n\n" +
+            error.message;
+
+        }
+
+
+
         alert(
-          "Rezervasyon kaydedilirken hata oluştu. Lütfen tekrar deneyin."
+          message
         );
+
+
 
       } finally {
 
-        addButton.disabled =
-          false;
+
+        if (
+          currentEmployee &&
+          currentEmployee
+            .can_create_reservation ===
+          true
+        ) {
+
+
+          addButton.disabled =
+            false;
+
+        }
+
 
 
         addButton.innerText =
@@ -899,18 +2079,22 @@
       ========================================
     */
 
+
     function escapeHtml(
       text
     ) {
+
 
       if (
         text === null ||
         text === undefined
       ) {
 
+
         return "";
 
       }
+
 
 
       const div =
@@ -919,8 +2103,10 @@
         );
 
 
+
       div.textContent =
         text;
+
 
 
       return div.innerHTML;
@@ -935,7 +2121,9 @@
       ========================================
     */
 
+
     function renderReservations() {
+
 
       const list =
         document.getElementById(
@@ -943,10 +2131,14 @@
         );
 
 
+
       const filterDate =
-        document.getElementById(
-          "filterDate"
-        ).value;
+        document
+          .getElementById(
+            "filterDate"
+          )
+          .value;
+
 
 
       const filtered =
@@ -957,16 +2149,22 @@
               filterDate
           )
           .sort(
-            (a, b) => {
+            (
+              a,
+              b
+            ) => {
+
 
               const timeA =
                 a.reservation_time ||
                 "99:99";
 
 
+
               const timeB =
                 b.reservation_time ||
                 "99:99";
+
 
 
               return (
@@ -979,13 +2177,16 @@
           );
 
 
+
       list.innerHTML =
         "";
+
 
 
       if (
         filtered.length === 0
       ) {
+
 
         list.innerHTML =
           `
@@ -994,24 +2195,30 @@
             </div>
           `;
 
+
       } else {
+
 
         filtered.forEach(
           reservation => {
+
 
 
             let birthdayText =
               "";
 
 
+
             if (
               reservation.is_birthday
             ) {
+
 
               const feeText =
                 reservation.birthday_fee
                   ? "Ücret Var"
                   : "Ücret Yok";
+
 
 
               birthdayText =
@@ -1022,6 +2229,7 @@
                 `;
 
             }
+
 
 
             const timeText =
@@ -1035,13 +2243,16 @@
                 : "Saat belirtilmedi";
 
 
+
             let noteText =
               "";
+
 
 
             if (
               reservation.notes
             ) {
+
 
               noteText =
                 `
@@ -1055,6 +2266,7 @@
             }
 
 
+
             list.innerHTML +=
               `
 
@@ -1063,17 +2275,21 @@
                   <div class="reservation-top">
 
                     <div class="reservation-name">
+
                       ${escapeHtml(
                         reservation.customer_name
                       )}
+
                     </div>
 
 
                     <button
                       class="delete-btn"
-                      onclick="deleteReservation(
-                        '${reservation.id}'
-                      )"
+                      onclick="
+                        deleteReservation(
+                          '${reservation.id}'
+                        )
+                      "
                     >
                       Sil
                     </button>
@@ -1115,6 +2331,7 @@
       }
 
 
+
       updateStats(
         filtered
       );
@@ -1129,12 +2346,15 @@
       ========================================
     */
 
+
     function updateStats(
       filteredReservations
     ) {
 
+
       const totalReservations =
         filteredReservations.length;
+
 
 
       const totalPeople =
@@ -1152,12 +2372,14 @@
         );
 
 
+
       document
         .getElementById(
           "reservationCount"
         )
         .innerText =
         totalReservations;
+
 
 
       document
@@ -1177,14 +2399,33 @@
       ========================================
     */
 
+
     async function deleteReservation(
       id
     ) {
+
+
+      if (
+        !currentUser ||
+        !currentEmployee
+      ) {
+
+
+        alert(
+          "Bu işlem için giriş yapmalısınız."
+        );
+
+        return;
+
+      }
+
+
 
       const confirmDelete =
         confirm(
           "Bu rezervasyonu silmek istediğinize emin misiniz?"
         );
+
 
 
       if (
@@ -1196,69 +2437,70 @@
       }
 
 
+
       try {
 
-        const response =
-          await fetch(
-            SUPABASE_URL +
-            "/reservations?id=eq." +
-            encodeURIComponent(
-              id
-            ),
-            {
-              method:
-                "DELETE",
 
-              headers: {
-
-                "apikey":
-                  SUPABASE_KEY,
-
-                "Authorization":
-                  "Bearer " +
-                  SUPABASE_KEY
-
-              }
-
-            }
+        const {
+          error
+        } =
+        await supabaseClient
+          .from(
+            "reservations"
+          )
+          .delete()
+          .eq(
+            "id",
+            id
           );
 
 
-        if (
-          !response.ok
-        ) {
 
-          const errorText =
-            await response.text();
+        if (
+          error
+        ) {
 
 
           console.error(
             "Supabase silme hatası:",
-            errorText
+            error
           );
 
 
-          throw new Error(
-            "Rezervasyon silinemedi."
-          );
+          throw error;
 
         }
 
 
+
+        alert(
+          "Rezervasyon silindi."
+        );
+
+
+
         await loadReservations();
+
 
 
       } catch (
         error
       ) {
 
+
         console.error(
+          "Rezervasyon silme hatası:",
           error
         );
 
 
+
         alert(
-          "Rezervasyon silinirken hata oluştu."
+          "Rezervasyon silinirken hata oluştu.\n\n" +
+          (
+            error.message ||
+            ""
+          )
         );
 
       }
@@ -1273,7 +2515,9 @@
       ========================================
     */
 
+
     function showToday() {
+
 
       document
         .getElementById(
@@ -1281,6 +2525,7 @@
         )
         .value =
         getToday();
+
 
 
       renderReservations();
@@ -1291,13 +2536,92 @@
 
     /*
       ========================================
-      SAYFA AÇILINCA VERİLERİ YÜKLE
+      ENTER İLE GİRİŞ
       ========================================
     */
 
-    loadReservations();
+
+    document
+      .getElementById(
+        "loginPassword"
+      )
+      .addEventListener(
+        "keydown",
+        function(
+          event
+        ) {
+
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+
+            login();
+
+          }
+
+        }
+      );
+
+
+
+    /*
+      ========================================
+      OTURUM DEĞİŞİKLİĞİNİ DİNLE
+      ========================================
+    */
+
+
+    supabaseClient
+      .auth
+      .onAuthStateChange(
+        (
+          event,
+          session
+        ) => {
+
+
+          console.log(
+            "Auth durumu:",
+            event
+          );
+
+
+          if (
+            event ===
+            "SIGNED_OUT"
+          ) {
+
+
+            currentUser =
+              null;
+
+
+            currentEmployee =
+              null;
+
+          }
+
+        }
+      );
+
+
+
+    /*
+      ========================================
+      SAYFA AÇILINCA
+      OTURUM KONTROLÜ
+      ========================================
+    */
+
+
+    checkSession();
+
 
   </script>
+
 
 </body>
 </html>
