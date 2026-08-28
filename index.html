@@ -88,6 +88,11 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .add-btn {
       width: 100%;
       margin-top: 20px;
@@ -192,6 +197,12 @@
       padding: 10px 15px;
     }
 
+    .loading {
+      text-align: center;
+      color: #6b7280;
+      padding: 20px;
+    }
+
     @media (max-width: 500px) {
       .date-filter {
         flex-direction: column;
@@ -219,12 +230,22 @@
 
       <div class="stat-box">
         <div>Rezervasyon</div>
-        <div class="stat-number" id="reservationCount">0</div>
+        <div
+          class="stat-number"
+          id="reservationCount"
+        >
+          0
+        </div>
       </div>
 
       <div class="stat-box">
         <div>Toplam Kişi</div>
-        <div class="stat-number" id="peopleCount">0</div>
+        <div
+          class="stat-number"
+          id="peopleCount"
+        >
+          0
+        </div>
       </div>
 
     </div>
@@ -237,13 +258,16 @@
       <h2>➕ Yeni Rezervasyon</h2>
 
       <label>Ad Soyad</label>
+
       <input
         type="text"
         id="name"
         placeholder="Müşteri adı soyadı"
       >
 
+
       <label>Kişi Sayısı</label>
+
       <input
         type="number"
         id="people"
@@ -251,24 +275,37 @@
         placeholder="Örn: 4"
       >
 
+
       <label>Tarih</label>
+
       <input
         type="date"
         id="date"
       >
 
+
       <label>Saat</label>
+
       <input
         type="time"
         id="time"
       >
 
+
       <label>Alan</label>
 
       <select id="area">
-        <option value="Bahçe">🌿 Bahçe</option>
-        <option value="Teras">🌇 Teras</option>
-        <option value="Salon">🏠 Salon</option>
+        <option value="Bahçe">
+          🌿 Bahçe
+        </option>
+
+        <option value="Teras">
+          🌇 Teras
+        </option>
+
+        <option value="Salon">
+          🏠 Salon
+        </option>
       </select>
 
 
@@ -295,13 +332,15 @@
         <label>Doğum Günü Ücreti</label>
 
         <select id="birthdayFee">
-          <option value="Ücret Yok">
+
+          <option value="false">
             Ücret Yok
           </option>
 
-          <option value="Ücret Var">
+          <option value="true">
             Ücret Var
           </option>
+
         </select>
 
       </div>
@@ -317,6 +356,7 @@
 
       <button
         class="add-btn"
+        id="addButton"
         onclick="addReservation()"
       >
         Rezervasyon Ekle
@@ -351,6 +391,10 @@
 
       <div id="reservationList">
 
+        <div class="loading">
+          Rezervasyonlar yükleniyor...
+        </div>
+
       </div>
 
     </div>
@@ -360,35 +404,65 @@
 
   <script>
 
-    let reservations =
-      JSON.parse(
-        localStorage.getItem("reservations")
-      ) || [];
+    /*
+      ========================================
+      SUPABASE BAĞLANTI BİLGİLERİ
+      ========================================
+    */
 
+    const SUPABASE_URL =
+      "https://moxlbxwkiwuahuoucnwo.supabase.co/rest/v1";
+
+
+    const SUPABASE_KEY =
+      "sb_publishable_TFyyOLgokQ_RxNFYmRjL-g_nff_x3dO";
+
+
+    /*
+      ========================================
+      REZERVASYONLAR
+      ========================================
+    */
+
+    let reservations = [];
+
+
+    /*
+      ========================================
+      TARİH
+      ========================================
+    */
 
     function getToday() {
 
       const today =
         new Date();
 
+
       const year =
         today.getFullYear();
+
 
       const month =
         String(
           today.getMonth() + 1
         ).padStart(2, "0");
 
+
       const day =
         String(
           today.getDate()
         ).padStart(2, "0");
 
-      return year +
+
+      return (
+        year +
         "-" +
         month +
         "-" +
-        day;
+        day
+      );
+
     }
 
 
@@ -405,16 +479,113 @@
 
 
 
+    /*
+      ========================================
+      SUPABASE'DEN REZERVASYONLARI ÇEK
+      ========================================
+    */
+
+    async function loadReservations() {
+
+      try {
+
+        const response =
+          await fetch(
+            SUPABASE_URL +
+            "/reservations" +
+            "?select=*" +
+            "&order=reservation_date.asc,reservation_time.asc",
+            {
+              headers: {
+                "apikey":
+                  SUPABASE_KEY,
+
+                "Authorization":
+                  "Bearer " +
+                  SUPABASE_KEY
+              }
+            }
+          );
+
+
+        if (
+          !response.ok
+        ) {
+
+          const errorText =
+            await response.text();
+
+
+          console.error(
+            "Supabase yükleme hatası:",
+            errorText
+          );
+
+
+          throw new Error(
+            "Rezervasyonlar yüklenemedi."
+          );
+
+        }
+
+
+        reservations =
+          await response.json();
+
+
+        renderReservations();
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        document
+          .getElementById(
+            "reservationList"
+          )
+          .innerHTML =
+          `
+            <div class="empty">
+              Rezervasyonlar yüklenirken bir hata oluştu.
+              <br><br>
+              Lütfen Supabase bağlantısını kontrol edin.
+            </div>
+          `;
+
+      }
+
+    }
+
+
+
+    /*
+      ========================================
+      DOĞUM GÜNÜ ÜCRETİ
+      ========================================
+    */
+
     function toggleFee() {
 
       const birthday =
-        document.getElementById("birthday");
+        document.getElementById(
+          "birthday"
+        );
+
 
       const feeSection =
-        document.getElementById("feeSection");
+        document.getElementById(
+          "feeSection"
+        );
 
 
-      if (birthday.checked) {
+      if (
+        birthday.checked
+      ) {
 
         feeSection.style.display =
           "block";
@@ -430,58 +601,68 @@
 
 
 
-    function addReservation() {
+    /*
+      ========================================
+      YENİ REZERVASYON EKLE
+      ========================================
+    */
+
+    async function addReservation() {
 
       const name =
         document
-        .getElementById("name")
-        .value
-        .trim();
+          .getElementById("name")
+          .value
+          .trim();
 
 
       const people =
         document
-        .getElementById("people")
-        .value;
+          .getElementById("people")
+          .value;
 
 
       const date =
         document
-        .getElementById("date")
-        .value;
+          .getElementById("date")
+          .value;
 
 
       const time =
         document
-        .getElementById("time")
-        .value;
+          .getElementById("time")
+          .value;
 
 
       const area =
         document
-        .getElementById("area")
-        .value;
+          .getElementById("area")
+          .value;
 
 
       const birthday =
         document
-        .getElementById("birthday")
-        .checked;
+          .getElementById("birthday")
+          .checked;
 
 
       const birthdayFee =
         document
-        .getElementById("birthdayFee")
-        .value;
+          .getElementById("birthdayFee")
+          .value ===
+        "true";
 
 
       const note =
         document
-        .getElementById("note")
-        .value
-        .trim();
+          .getElementById("note")
+          .value
+          .trim();
 
 
+      /*
+        ZORUNLU ALAN KONTROLÜ
+      */
 
       if (
         name === "" ||
@@ -498,100 +679,261 @@
       }
 
 
+      const addButton =
+        document.getElementById(
+          "addButton"
+        );
+
+
+      addButton.disabled =
+        true;
+
+
+      addButton.innerText =
+        "Kaydediliyor...";
+
+
+      /*
+        SUPABASE'E GÖNDERİLECEK VERİ
+      */
 
       const reservation = {
 
-        id:
-          Date.now(),
-
-        name:
+        customer_name:
           name,
 
-        people:
-          Number(people),
+        phone:
+          null,
 
-        date:
+        reservation_date:
           date,
 
-        time:
-          time,
+        reservation_time:
+          time
+            ? time
+            : null,
+
+        guest_count:
+          Number(
+            people
+          ),
 
         area:
           area,
 
-        birthday:
+        requested_table:
+          null,
+
+        notes:
+          note
+            ? note
+            : null,
+
+        is_birthday:
           birthday,
 
-        birthdayFee:
+        birthday_fee:
           birthday
             ? birthdayFee
-            : "",
+            : false,
 
-        note:
-          note
+        status:
+          "Aktif"
 
       };
 
 
+      try {
 
-      reservations.push(
-        reservation
-      );
+        const response =
+          await fetch(
+            SUPABASE_URL +
+            "/reservations",
+            {
+              method:
+                "POST",
 
+              headers: {
 
-      localStorage.setItem(
-        "reservations",
-        JSON.stringify(
-          reservations
-        )
-      );
+                "apikey":
+                  SUPABASE_KEY,
 
+                "Authorization":
+                  "Bearer " +
+                  SUPABASE_KEY,
 
+                "Content-Type":
+                  "application/json",
 
-      alert(
-        "Rezervasyon başarıyla eklendi!"
-      );
+                "Prefer":
+                  "return=representation"
 
+              },
 
+              body:
+                JSON.stringify(
+                  reservation
+                )
 
-      document
-        .getElementById("name")
-        .value =
-        "";
-
-
-      document
-        .getElementById("people")
-        .value =
-        "";
-
-
-      document
-        .getElementById("time")
-        .value =
-        "";
+            }
+          );
 
 
-      document
-        .getElementById("note")
-        .value =
-        "";
+        if (
+          !response.ok
+        ) {
+
+          const errorText =
+            await response.text();
 
 
-      document
-        .getElementById("birthday")
-        .checked =
-        false;
+          console.error(
+            "Supabase ekleme hatası:",
+            errorText
+          );
 
 
-      toggleFee();
+          throw new Error(
+            "Rezervasyon kaydedilemedi."
+          );
+
+        }
 
 
-      renderReservations();
+        const newReservation =
+          await response.json();
+
+
+        console.log(
+          "Eklenen rezervasyon:",
+          newReservation
+        );
+
+
+        alert(
+          "Rezervasyon başarıyla eklendi!"
+        );
+
+
+        /*
+          FORMU TEMİZLE
+        */
+
+        document
+          .getElementById("name")
+          .value =
+          "";
+
+
+        document
+          .getElementById("people")
+          .value =
+          "";
+
+
+        document
+          .getElementById("time")
+          .value =
+          "";
+
+
+        document
+          .getElementById("note")
+          .value =
+          "";
+
+
+        document
+          .getElementById("birthday")
+          .checked =
+          false;
+
+
+        document
+          .getElementById("birthdayFee")
+          .value =
+          "false";
+
+
+        toggleFee();
+
+
+        /*
+          VERİLERİ YENİDEN ÇEK
+        */
+
+        await loadReservations();
+
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        alert(
+          "Rezervasyon kaydedilirken hata oluştu. Lütfen tekrar deneyin."
+        );
+
+      } finally {
+
+        addButton.disabled =
+          false;
+
+
+        addButton.innerText =
+          "Rezervasyon Ekle";
+
+      }
 
     }
 
 
+
+    /*
+      ========================================
+      GÜVENLİ METİN GÖSTERİMİ
+      ========================================
+    */
+
+    function escapeHtml(
+      text
+    ) {
+
+      if (
+        text === null ||
+        text === undefined
+      ) {
+
+        return "";
+
+      }
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.textContent =
+        text;
+
+
+      return div.innerHTML;
+
+    }
+
+
+
+    /*
+      ========================================
+      REZERVASYONLARI GÖSTER
+      ========================================
+    */
 
     function renderReservations() {
 
@@ -607,26 +949,38 @@
         ).value;
 
 
-
       const filtered =
         reservations
-        .filter(
-          reservation =>
-            reservation.date ===
-            filterDate
-        )
-        .sort(
-          (a, b) =>
-            a.time.localeCompare(
-              b.time
-            )
-        );
+          .filter(
+            reservation =>
+              reservation.reservation_date ===
+              filterDate
+          )
+          .sort(
+            (a, b) => {
 
+              const timeA =
+                a.reservation_time ||
+                "99:99";
+
+
+              const timeB =
+                b.reservation_time ||
+                "99:99";
+
+
+              return (
+                timeA.localeCompare(
+                  timeB
+                )
+              );
+
+            }
+          );
 
 
       list.innerHTML =
         "";
-
 
 
       if (
@@ -635,9 +989,9 @@
 
         list.innerHTML =
           `
-          <div class="empty">
-            Bu tarih için rezervasyon bulunmuyor.
-          </div>
+            <div class="empty">
+              Bu tarih için rezervasyon bulunmuyor.
+            </div>
           `;
 
       } else {
@@ -651,85 +1005,107 @@
 
 
             if (
-              reservation.birthday
+              reservation.is_birthday
             ) {
+
+              const feeText =
+                reservation.birthday_fee
+                  ? "Ücret Var"
+                  : "Ücret Yok";
+
 
               birthdayText =
                 `
-                <br>
-                🎂 Doğum Günü:
-                ${reservation.birthdayFee}
+                  <br>
+                  🎂 Doğum Günü:
+                  ${feeText}
                 `;
 
             }
 
 
-
-            let timeText =
-              reservation.time
-                ? reservation.time
+            const timeText =
+              reservation.reservation_time
+                ? reservation
+                    .reservation_time
+                    .substring(
+                      0,
+                      5
+                    )
                 : "Saat belirtilmedi";
 
 
-
             let noteText =
-              reservation.note
-                ? `
+              "";
+
+
+            if (
+              reservation.notes
+            ) {
+
+              noteText =
+                `
                   <br>
                   📝 Not:
-                  ${reservation.note}
-                  `
-                : "";
+                  ${escapeHtml(
+                    reservation.notes
+                  )}
+                `;
 
+            }
 
 
             list.innerHTML +=
               `
 
-              <div class="reservation">
+                <div class="reservation">
 
-                <div class="reservation-top">
+                  <div class="reservation-top">
 
-                  <div class="reservation-name">
-                    ${reservation.name}
+                    <div class="reservation-name">
+                      ${escapeHtml(
+                        reservation.customer_name
+                      )}
+                    </div>
+
+
+                    <button
+                      class="delete-btn"
+                      onclick="deleteReservation(
+                        '${reservation.id}'
+                      )"
+                    >
+                      Sil
+                    </button>
+
                   </div>
 
 
-                  <button
-                    class="delete-btn"
-                    onclick="deleteReservation(
-                      ${reservation.id}
-                    )"
-                  >
-                    Sil
-                  </button>
+                  <div class="reservation-info">
+
+                    👥
+                    ${reservation.guest_count}
+                    kişi
+
+                    <br>
+
+                    🕒
+                    ${timeText}
+
+                    <br>
+
+                    📍
+                    ${escapeHtml(
+                      reservation.area
+                    )}
+
+                    ${birthdayText}
+
+                    ${noteText}
+
+                  </div>
 
                 </div>
-
-
-                <div class="reservation-info">
-
-                  👥
-                  ${reservation.people}
-                  kişi
-
-                  <br>
-
-                  🕒
-                  ${timeText}
-
-                  <br>
-
-                  📍
-                  ${reservation.area}
-
-                  ${birthdayText}
-
-                  ${noteText}
-
-                </div>
-
-              </div>
 
               `;
 
@@ -739,7 +1115,6 @@
       }
 
 
-
       updateStats(
         filtered
       );
@@ -747,6 +1122,12 @@
     }
 
 
+
+    /*
+      ========================================
+      İSTATİSTİKLER
+      ========================================
+    */
 
     function updateStats(
       filteredReservations
@@ -758,9 +1139,15 @@
 
       const totalPeople =
         filteredReservations.reduce(
-          (total, reservation) =>
+          (
+            total,
+            reservation
+          ) =>
             total +
-            reservation.people,
+            Number(
+              reservation.guest_count ||
+              0
+            ),
           0
         );
 
@@ -784,7 +1171,13 @@
 
 
 
-    function deleteReservation(
+    /*
+      ========================================
+      REZERVASYON SİL
+      ========================================
+    */
+
+    async function deleteReservation(
       id
     ) {
 
@@ -803,27 +1196,82 @@
       }
 
 
+      try {
 
-      reservations =
-        reservations.filter(
-          reservation =>
-            reservation.id !== id
+        const response =
+          await fetch(
+            SUPABASE_URL +
+            "/reservations?id=eq." +
+            encodeURIComponent(
+              id
+            ),
+            {
+              method:
+                "DELETE",
+
+              headers: {
+
+                "apikey":
+                  SUPABASE_KEY,
+
+                "Authorization":
+                  "Bearer " +
+                  SUPABASE_KEY
+
+              }
+
+            }
+          );
+
+
+        if (
+          !response.ok
+        ) {
+
+          const errorText =
+            await response.text();
+
+
+          console.error(
+            "Supabase silme hatası:",
+            errorText
+          );
+
+
+          throw new Error(
+            "Rezervasyon silinemedi."
+          );
+
+        }
+
+
+        await loadReservations();
+
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          error
         );
 
 
-      localStorage.setItem(
-        "reservations",
-        JSON.stringify(
-          reservations
-        )
-      );
+        alert(
+          "Rezervasyon silinirken hata oluştu."
+        );
 
-
-      renderReservations();
+      }
 
     }
 
 
+
+    /*
+      ========================================
+      BUGÜNÜ GÖSTER
+      ========================================
+    */
 
     function showToday() {
 
@@ -841,7 +1289,13 @@
 
 
 
-    renderReservations();
+    /*
+      ========================================
+      SAYFA AÇILINCA VERİLERİ YÜKLE
+      ========================================
+    */
+
+    loadReservations();
 
   </script>
 
